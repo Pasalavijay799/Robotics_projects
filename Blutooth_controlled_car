@@ -1,0 +1,107 @@
+// Motor A connections
+#define ENA 10
+#define IN1 8
+#define IN2 9
+
+// Motor B connections
+#define ENB 11
+#define IN3 6
+#define IN4 7
+
+void setup() {
+    // Set motor control pins as OUTPUT
+    pinMode(ENA, OUTPUT);
+    pinMode(IN1, OUTPUT);
+    pinMode(IN2, OUTPUT);
+    pinMode(ENB, OUTPUT);
+    pinMode(IN3, OUTPUT);
+    pinMode(IN4, OUTPUT);
+
+    // Start serial communication
+    Serial.begin(9600);
+}
+
+void loop() {
+    if (Serial.available()) {
+        char command = Serial.read();
+        Serial.println(command); // Print received command for debugging
+
+        // Control motors based on received command
+        switch (command) {
+            case 'F': // Move Forward
+                moveForward();
+                break;
+            case 'B': // Move Backward
+                moveBackward();
+                break;
+            case 'L': // Turn Left
+                turnLeft();
+                break;
+            case 'R': // Turn Right
+                turnRight();
+                break;
+            case 'S': // Stop
+                stopMotors();
+                break;
+            default:
+                stopMotors();
+                break;
+        }
+    }
+}
+
+// Function to move forward
+void moveForward() {
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+    analogWrite(ENA, 130); // Adjust speed (0-255)
+    analogWrite(ENB, 130);
+    delay(300);
+    stopMotors();
+}
+
+// Function to move backward
+void moveBackward() {
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+    analogWrite(ENA, 90);
+    analogWrite(ENB, 90);
+    delay(300);
+    stopMotors();
+}
+
+// Function to turn left
+void turnLeft() {
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+    analogWrite(ENA, 90);
+    analogWrite(ENB, 90);
+    delay(300);
+    stopMotors();
+}
+
+// Function to turn right
+void turnRight() {
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+    analogWrite(ENA, 90);
+    analogWrite(ENB, 90);
+    delay(300);
+    stopMotors();
+}
+
+// Function to stop motors
+void stopMotors() {
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, LOW);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, LOW);
+}
